@@ -96,24 +96,24 @@ int main(int argc, char* argv[])
 	cout << "*** ESTRAZIONE COMPLETATA ***" << endl;
 	cout << "ESoCand version " << PROGRAM_VERSION << endl;
 	
-	cout << "Hai scelto il seguente seed di randomizzazione: " << rngseed_input_string << endl;
+	cout << "Hai scelto il seguente seed di randomizzazione: \"" << rngseed_input_string << "\"" << endl;
 	
 	cout << "Questa e' la lista dei candidati, ordinata per come li hai inseriti:" << endl;
 	for (size_t i = 0, iEnd = candidate_names_asinput.size(); i != iEnd; ++i)
 	{
-		cout << "--> Lista nomi inserita, candidato " << setw(4) << right << i + 1 << ") " << candidate_names_asinput[i] << endl;
+		cout << "--> Lista nomi inserita, candidato " << setw(4) << right << i + 1 << ") \"" << candidate_names_asinput[i] << "\"" << endl;
 	}
 	
 	cout << "Questa e' la lista dei candidati, ordinata per lunghezza/ordine ASCII:" << endl;
 	for (size_t i = 0, iEnd = candidate_names_sorted.size(); i != iEnd; ++i)
 	{
-		cout << "--> Lista nomi ordinata, candidato " << setw(4) << right << i + 1 << ") " << candidate_names_sorted[i] << endl;
+		cout << "--> Lista nomi ordinata, candidato " << setw(4) << right << i + 1 << ") \"" << candidate_names_sorted[i] << "\"" << endl;
 	}
 	
 	cout << "Questa e' la lista dei candidati, estratta a sorte:" << endl;
 	for (size_t i = 0, iEnd = candidate_names_randomized.size(); i != iEnd; ++i)
 	{
-		cout << "--> Lista nomi ordinata, candidato " << setw(4) << right << i + 1 << ") " << candidate_names_randomized[i] << endl;
+		cout << "--> Lista nomi sorteggiata, candidato " << setw(4) << right << i + 1 << ") \"" << candidate_names_randomized[i] << "\"" << endl;
 	}
 	
 	return 0;
