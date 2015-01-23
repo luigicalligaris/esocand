@@ -104,7 +104,7 @@ int main(int argc, char* argv[])
 		cout << "--> Lista nomi inserita, candidato " << setw(4) << right << i + 1 << ") \"" << candidate_names_asinput[i] << "\"" << endl;
 	}
 	
-	cout << "Questa e' la lista dei candidati, ordinata per lunghezza/ordine ASCII:" << endl;
+	cout << "Questa e' la lista dei candidati, ordinata per ordine ASCII:" << endl;
 	for (size_t i = 0, iEnd = candidate_names_sorted.size(); i != iEnd; ++i)
 	{
 		cout << "--> Lista nomi ordinata, candidato " << setw(4) << right << i + 1 << ") \"" << candidate_names_sorted[i] << "\"" << endl;
