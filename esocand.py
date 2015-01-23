@@ -178,9 +178,6 @@ class Gui(Tk.Frame):
 		button_save_names_to_file     = Tk.Button(master, bg='pale green'  , activebackground='pale green'  , text='Salva nomi in file'     , command=write_output_list)
 		
 		
-		for i in range(4):
-			input_namelist.insert(Tk.END,"Element "+str(i))
-		
 		
 		scrollbar_input_namelist .config( command = input_namelist .yview )
 		scrollbar_output_namelist.config( command = output_namelist.yview )
