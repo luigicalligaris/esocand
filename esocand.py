@@ -35,8 +35,6 @@ def write_iterable_to_file_line_by_line(iterable, f):
 import Tkinter as Tk
 
 class Gui(Tk.Frame):
-	
-	
 	def __init__(self, master=None):
 		import Tkconstants as Tkc
 		import tkFileDialog
@@ -61,10 +59,16 @@ class Gui(Tk.Frame):
 		separator_vert_1 = Tk.Frame(master, width=10, bd=1, relief=Tk.FLAT)
 		separator_vert_2 = Tk.Frame(master, width=10, bd=1, relief=Tk.FLAT)
 		
+		buffer_label_input_namelist  = Tk.StringVar()
+		buffer_label_output_namelist = Tk.StringVar()
+		
+		buffer_label_input_namelist .set("Lista inserita"  )
+		buffer_label_output_namelist.set("Lista riordinata")
+		
 		label_text_seed       = Tk.Label(master, height=1, relief=Tk.SUNKEN, text="Seed di estrazione")
 		label_text_add_name   = Tk.Label(master, height=1, relief=Tk.SUNKEN, text="Nome da aggiungere")
-		label_input_namelist  = Tk.Label(master, height=1, relief=Tk.SUNKEN, text="Lista inserita"    )
-		label_output_namelist = Tk.Label(master, height=1, relief=Tk.SUNKEN, text="Lista riordinata"  )
+		label_input_namelist  = Tk.Label(master, height=1, relief=Tk.SUNKEN, textvariable=buffer_label_input_namelist   )
+		label_output_namelist = Tk.Label(master, height=1, relief=Tk.SUNKEN, textvariable=buffer_label_output_namelist  )
 		
 		scrollbar_input_namelist   = Tk.Scrollbar(master, orient=Tk.VERTICAL)
 		scrollbar_output_namelist  = Tk.Scrollbar(master, orient=Tk.VERTICAL)
@@ -118,11 +122,22 @@ class Gui(Tk.Frame):
 				input_namelist.insert(ins_pos, to_insert)
 		
 		
+		def update_label_input_namelist():
+			buffer_label_input_namelist .set('Lista inserita ('   + str(input_namelist .size()) + ' elementi)' )
+			
+		def update_label_output_namelist():
+			buffer_label_output_namelist.set('Lista riordinata (' + str(output_namelist.size()) + ' elementi)' )
+		
+		
+		
+		
+		
 		# Button callables
 		def insert_from_textbox():
 			to_insert = text_add_name.get(1.0, Tk.END)
 			insert_single(to_insert)
 			text_add_name.delete(1.0, Tk.END)
+			update_label_input_namelist()
 		
 		
 		def insert_from_file():
@@ -139,10 +154,12 @@ class Gui(Tk.Frame):
 			names = list(names_set)
 			
 			insert_multiple(names)
+			update_label_input_namelist()
 		
 		
 		def reset_list():
 			input_namelist.delete(0, Tk.END)
+			update_label_input_namelist()
 		
 		
 		def shuffle_list():
@@ -158,6 +175,7 @@ class Gui(Tk.Frame):
 			
 			for element in shuffled_list:
 				output_namelist.insert(Tk.END, element)
+			update_label_output_namelist()
 			
 		
 		def write_output_list():
