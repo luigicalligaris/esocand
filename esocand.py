@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from __future__ import print_function
 
-ESOCAND_VERSION='2015.01.23_build001'
+ESOCAND_VERSION='0.1 beta'
 
 
 def get_list_randomized_from_content(objects_container, random_seed=''):
@@ -66,7 +66,7 @@ class Gui(Tk.Frame):
 		buffer_label_output_namelist.set("Lista riordinata")
 		
 		label_text_seed       = Tk.Label(master, height=1, relief=Tk.SUNKEN, text="Seed di estrazione")
-		label_text_add_name   = Tk.Label(master, height=1, relief=Tk.SUNKEN, text="Nome da aggiungere")
+		label_text_add_name   = Tk.Label(master, height=1, relief=Tk.SUNKEN, text="Nomi da aggiungere (1 per linea)")
 		label_input_namelist  = Tk.Label(master, height=1, relief=Tk.SUNKEN, textvariable=buffer_label_input_namelist   )
 		label_output_namelist = Tk.Label(master, height=1, relief=Tk.SUNKEN, textvariable=buffer_label_output_namelist  )
 		
@@ -78,34 +78,18 @@ class Gui(Tk.Frame):
 		
 		
 		# Helpers
-		
-		def insert_single(to_insert):
-			# Strip the newline at the end
-			if to_insert[-1] == u'\n':
-				to_insert = to_insert[:-1]
-			
-			# Prevent whitespace from being inserted
-			if len(to_insert.strip()) == 0:
-				return
-			
-			already_inserted = input_namelist.get(0, Tk.END)
-			
-			# Prevent inserting duplicate names
-			if to_insert in already_inserted:
-				return
-			
-			import bisect
-			ins_pos = bisect.bisect(already_inserted, to_insert)
-			print('adding '+repr(to_insert))
-			input_namelist.insert(ins_pos, to_insert)
-		
+		def parse_multiline(multiline_text):
+			import os
+			return multiline_text.split(os.linesep)
 		
 		def insert_multiple(iterable):
+			import os
 			already_inserted = input_namelist.get(0, Tk.END)
 			
 			for to_insert in iterable:
 				# Strip the newline at the end
-				if to_insert[-1] == u'\n':
+				#if to_insert[-1] == u'\n':
+				if to_insert[-1] == os.linesep:
 					to_insert = to_insert[:-1]
 				
 				# Prevent whitespace from being inserted
@@ -135,7 +119,7 @@ class Gui(Tk.Frame):
 		# Button callables
 		def insert_from_textbox():
 			to_insert = text_add_name.get(1.0, Tk.END)
-			insert_single(to_insert)
+			insert_multiple( parse_multiline(to_insert) )
 			text_add_name.delete(1.0, Tk.END)
 			update_label_input_namelist()
 		
@@ -189,7 +173,7 @@ class Gui(Tk.Frame):
 		
 		
 		
-		button_add_names_from_textbox = Tk.Button(master, bg='LightSkyBlue', activebackground='LightSkyBlue', text='Aggiungi nome'          , command=insert_from_textbox)
+		button_add_names_from_textbox = Tk.Button(master, bg='LightSkyBlue', activebackground='LightSkyBlue', text='Aggiungi nomi'          , command=insert_from_textbox)
 		button_add_names_from_file    = Tk.Button(master, bg='LightSkyBlue', activebackground='LightSkyBlue', text='Aggiungi nomi da file'  , command=insert_from_file)
 		button_reset_list             = Tk.Button(master, bg='orange red'  , activebackground='orange red'  , text='Cancella lista inserita', command=reset_list)
 		button_shuffle_list           = Tk.Button(master, bg='yellow'      , activebackground='yellow'      , text='Calcola nuova lista'    , command=shuffle_list)
