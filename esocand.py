@@ -82,28 +82,38 @@ class Gui(Tk.Frame):
 			import os
 			return multiline_text.split(os.linesep)
 		
+		def strip_newlines(mystring):
+			import os
+			if mystring[-1] == os.linesep:
+				return mystring[:-1]
+			else:
+				return mystring
+		
+		def name_is_valid(mystring):
+			# Prevent whitespace from being inserted
+			if len(mystring) == 0 or len(mystring.strip()) == 0:
+				return False
+			
+			# String survived cuts
+			return True
+		
+		def filter_invalid_names(iterable):
+			return [ strip_newlines(s) for s in iterable if name_is_valid(s) ]
+		
 		def insert_multiple(iterable):
 			import os
-			already_inserted = input_namelist.get(0, Tk.END)
+			import heapq
 			
-			for to_insert in iterable:
-				# Strip the newline at the end
-				#if to_insert[-1] == u'\n':
-				if to_insert[-1] == os.linesep:
-					to_insert = to_insert[:-1]
-				
-				# Prevent whitespace from being inserted
-				if len(to_insert.strip()) == 0:
-					return
-				
-				# Prevent inserting duplicate names
-				if to_insert in already_inserted:
-					return
-				
-				import bisect
-				ins_pos = bisect.bisect(already_inserted, to_insert)
-				print('adding '+repr(to_insert))
-				input_namelist.insert(ins_pos, to_insert)
+			already_inserted = list( input_namelist.get(0, Tk.END) )
+			input_namelist.delete(0, Tk.END)
+			
+			merged_list = sorted( list( set( already_inserted + filter_invalid_names(iterable) ) ) )
+			
+			print('Merged list content follows:')
+			print(repr(merged_list))
+			
+			for to_insert in merged_list:
+				input_namelist.insert(Tk.END, to_insert)
 		
 		
 		def update_label_input_namelist():
@@ -177,7 +187,7 @@ class Gui(Tk.Frame):
 		button_add_names_from_file    = Tk.Button(master, bg='LightSkyBlue', activebackground='LightSkyBlue', text='Aggiungi nomi da file'  , command=insert_from_file)
 		button_reset_list             = Tk.Button(master, bg='orange red'  , activebackground='orange red'  , text='Cancella lista inserita', command=reset_list)
 		button_shuffle_list           = Tk.Button(master, bg='yellow'      , activebackground='yellow'      , text='Calcola nuova lista'    , command=shuffle_list)
-		button_save_names_to_file     = Tk.Button(master, bg='pale green'  , activebackground='pale green'  , text='Salva nomi in file'     , command=write_output_list)
+		button_save_names_to_file     = Tk.Button(master, bg='pale green'  , activebackground='pale green'  , text='Salva nomi in file (1 per linea)'     , command=write_output_list)
 		
 		
 		
@@ -227,28 +237,26 @@ class Gui(Tk.Frame):
 		
 
 class GuiCore:
+	def poll(self):
+		self.root.after(1000, self.poll)
+	
+	def quit_KeyboardInterrupt(event):
+		self.root.quit()
+		raise KeyboardInterrupt()
+	
 	def __init__(self):
 		import Tkinter as Tk
-		rootwidget = Tk.Tk()
-		app = Gui(master=rootwidget)
-		rootwidget.mainloop()
+		self.root = Tk.Tk()
+		self.root.bind('<Control-c>', self.quit_KeyboardInterrupt)
+		self.app = Gui(master=self.root)
+		self.poll()
+		self.root.mainloop()
 
 def run_gui():
 	a = GuiCore()
 
 
-run_gui()
-
-a = set(['alfa alfa','beta beta','gamma gamma','delta delta'])
-print('unsorted                 : ' + str( repr( a ) ) )
-print('sorted                   : ' + str( repr( sorted(a) ) ) )
-print('shuffled (default seed)  : ' + str( repr( get_list_randomized_from_content(a) ) ) )
-print('shuffled (default seed)  : ' + str( repr( get_list_randomized_from_content(a) ) ) )
-print('shuffled (\'gommo\' seed): ' + str( repr( get_list_randomized_from_content(a,'gommo') ) ) )
-print('shuffled (\'gommo\' seed): ' + str( repr( get_list_randomized_from_content(a,'gommo') ) ) )
-
-
-#def get_randomized_list
-
-#if __name__ == "__main__":
+# If executed as main
+if __name__ == "__main__":
+	run_gui()
 
