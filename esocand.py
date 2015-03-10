@@ -43,7 +43,7 @@ def get_list_from_file_line_by_line(f):
 
 def write_iterable_to_file_line_by_line(iterable, f):
 	for line in iterable:
-		print_function(line, file=f)
+		print_function(line.encode('utf-8'), file=f)
 
 
 import Tkinter as Tk
