@@ -93,12 +93,11 @@ class Gui(Tk.Frame):
 		
 		# Helpers
 		def parse_multiline(multiline_text):
-			import os
-			return multiline_text.split(os.linesep)
+			return multiline_text.split(u'\n')
 		
 		def strip_newlines(mystring):
 			import os
-			if mystring[-1] == os.linesep:
+			if mystring[-1] == u'\n':
 				return mystring[:-1]
 			else:
 				return mystring
