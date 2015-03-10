@@ -18,7 +18,7 @@ from __future__ import print_function
 ESOCAND_VERSION='0.1 beta'
 
 
-def get_list_randomized_from_content(objects_container, random_seed=''):
+def get_list_randomized_from_content(objects_container, random_seed=u''):
 	import hashlib
 	import random
 	
@@ -27,8 +27,8 @@ def get_list_randomized_from_content(objects_container, random_seed=''):
 	
 	hasher = hashlib.sha256()
 	for element in objects_container_aslist:
-		hasher.update( element )
-	hasher.update( random_seed )
+		hasher.update( element.encode('utf-8') )
+	hasher.update( random_seed.encode('utf-8') )
 	
 	random.seed( hasher.hexdigest() )
 	
